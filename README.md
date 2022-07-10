@@ -2,7 +2,7 @@
 
 The scrips in this repository were implemented as a novel way of converting the markdown files produced by exporting a Notion database of pages to a Book. LaTeX is used to compile the book.
 
-It is implemented for the notion template given here, which is a diary that can be kept with a partner. The compiled book is intended to be for a year of entries for two people, but may easily be adjusted as required.
+It is implemented for the notion template given [here](https://pretty-toucan-7dc.notion.site/cb5c53bca704488b8fd66ec7e2029910?v=217082f1556649c2b19296151e9490b0), which is a diary that can be kept with a partner. The compiled book is intended to be for a year of entries for two people, but may easily be adjusted as required.
 
 Essentially, the code included is a markdown to tex converter.
 

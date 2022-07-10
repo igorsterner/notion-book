@@ -9,3 +9,4 @@ notion_export_latest/
 Datastructure.txt
 .idea/
 book.log
+src/convertor.py
