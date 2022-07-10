@@ -66,7 +66,8 @@ class NotionBook:
 
                 print(f"Entry {title} collected")
 
-    def textitle(self, title):
+    @staticmethod
+    def textitle(title):
         if len(title) == 0:
             return 'empty' + str(np.random.randint(100, 999))
         else:
@@ -134,14 +135,16 @@ class NotionBook:
                 t.write(
                     '\n \n\includepdf[pages={1}, height=\paperheight]' + '{' f"entries/{month}/pages/{title}.pdf" + '}')
 
-    def converter(self, lines, i, section: str):
+    @staticmethod
+    def converter(lines, i, section: str):
         if len(lines) <= i + 1 or lines[i + 2].startswith('#'):
             lines[i] = ''
         else:
             lines[i] = '\n' + '\subsubsection{' + section + '}' + '\n'
         return lines
 
-    def texclean(self, line):
+    @staticmethod
+    def texclean(line):
         line = line.replace('&', '\&')
         line = line.replace('%', '\%')
         line = line.replace('_', '\_')
@@ -149,7 +152,8 @@ class NotionBook:
         line = line.replace("~", "")
         return line
 
-    def texemoji(self, line):
+    @staticmethod
+    def texemoji(line):
         all_emojis = emojis.get(line)
         ignore_emoji = ['1F92D', '1F970', '1F642', '1F97A', '1F929', '1F9D0', '1F913', '1F976', '1F928', '1F923',
                         '1F4F8']
@@ -162,7 +166,8 @@ class NotionBook:
                 line = line.replace(emoji, latex_emoji)
         return line
 
-    def img_to_pdf(self, in_dir, out_dir):
+    @staticmethod
+    def img_to_pdf(in_dir, out_dir):
         print(f"Converting image to pdf")
         temp_dir = out_dir[:-4] + '-temp.pdf'
         image = Image.open(in_dir)
@@ -196,13 +201,8 @@ class NotionBook:
                         pic_dirs.append('month_photos/' + picture)
                 for picture_dir in pic_dirs:
                     out_dir = f"build/entries/{month}/pages/{month}{pic_dirs.index(picture_dir) + 1}.pdf"
-                    rotated = img_to_pdf(picture_dir, out_dir)
-                    if rotated:
-                        f.write(
-                            '\includepdf[pages={1}, height=\paperheight]' + '{' + out_dir[
-                                                                                  :-4] + '-rot.pdf' + '}' + '\n')
-                    else:
-                        f.write('\includepdf[pages={1}, height=\paperheight]' + '{' + out_dir + '}' + '\n')
+                    self.img_to_pdf(picture_dir, out_dir)
+                    f.write('\includepdf[pages={1}, height=\paperheight]' + '{' + out_dir + '}' + '\n')
                 for date in self.entries[month].keys():
                     for partner in self.entries[month][date].keys():
                         title = self.entries[month][date][partner]['Title']
