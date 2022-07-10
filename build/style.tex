@@ -1,0 +1,34 @@
+\usepackage[utf8]{inputenc}
+
+\usepackage[paperwidth = 138mm, paperheight = 203mm]{geometry}
+\setstocksize{203mm}{138mm}
+\usepackage{pdfpages}
+\usepackage{enumitem, amssymb}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label =$\square$}
+
+\usepackage{fontspec}
+\setmainfont{Segoe UI}
+\usepackage{xeCJK}
+\setCJKmainfont{SimSun}
+
+\parindent 0pt
+\parskip 10pt
+
+\renewcommand\thechapter{\ifnum\value{chapter} < 10 0\fi\arabic{chapter}}
+
+\usepackage[explicit]{titlesec}
+\titleformat{\chapter}[display]
+{\normalfont\Large\sffamily}
+{\flushright\fontsize{90}{0}\textbf{\textcolor{black!20}{\thechapter}}}{10pt}
+{\flushright\fontsize{30}{0}\textbf{#1}\vskip80pt\rule{\textwidth}{2pt}}
+\titlespacing*{\chapter}{0pt}{-40pt}{0pt}
+\usepackage{fancyhdr}
+\lhead{\headerL}
+\chead{\headerC}
+\rhead{\headerR}
+\def\headerL{}
+\def\headerC{}
+\def\headerR{}
+\newcommand{\thispageheader}[2][R]{\expandafter\def\csname header#1\endcsname{#2}}
+\pagestyle{fancy}

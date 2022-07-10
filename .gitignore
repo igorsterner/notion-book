@@ -1,0 +1,11 @@
+build/emojis
+build/entries/
+build/book*
+build/dedication.pdf
+front-back-side/
+month_photos/
+notion-export/
+notion_export_latest/
+Datastructure.txt
+.idea/
+book.log
