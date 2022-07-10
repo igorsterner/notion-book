@@ -9,13 +9,8 @@ import csv
 class NotionBook:
 
     def __init__(self):
-        self.months = {'01': 'Jan', '02': 'Feb', '03': 'Mar', '04': 'Apr', '05': 'May', '06': 'Jun', '07': 'Jul',
-                       '08': 'Aug',
-                       '09': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dec'}
-        self.full_months = {'Jan': 'January', 'Feb': 'February', 'Mar': 'March', 'Apr': 'April', 'May': 'May',
-                            'Jun': 'Jun',
-                            'Jul': 'July', 'Aug': 'August', 'Sep': 'September', 'Oct': 'October', 'Nov': 'November',
-                            'Dec': 'December'}
+        self.months = {'01': 'Jan', '02': 'Feb', '03': 'Mar', '04': 'Apr', '05': 'May', '06': 'Jun', '07': 'Jul', '08': 'Aug', '09': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dec'}
+        self.full_months = {'Jan': 'January', 'Feb': 'February', 'Mar': 'March', 'Apr': 'April', 'May': 'May', 'Jun': 'Jun', 'Jul': 'July', 'Aug': 'August', 'Sep': 'September', 'Oct': 'October', 'Nov': 'November', 'Dec': 'December'}
         self.notion_dir = 'notion-export/'
         self.DIARIES_DIR = self.notion_dir + 'diaries-export/'
 
