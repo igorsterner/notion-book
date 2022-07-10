@@ -5,17 +5,20 @@ from PIL import Image
 from PyPDF2 import PdfFileReader, PdfFileWriter
 import csv
 
-months = {'01': 'Jan', '02': 'Feb', '03': 'Mar', '04': 'Apr', '05': 'May', '06': 'Jun', '07': 'Jul', '08': 'Aug',
-          '09': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dec'}
-full_months = {'Jan': 'January', 'Feb': 'February', 'Mar': 'March', 'Apr': 'April', 'May': 'May', 'Jun': 'Jun',
-               'Jul': 'July', 'Aug': 'August', 'Sep': 'September', 'Oct': 'October', 'Nov': 'November',
-               'Dec': 'December'}
 
-notion_dir = 'notion-export/'
-DIARIES_DIR = notion_dir + 'diaries-export/'
 
 
 class NotionBook:
+
+    def __init__(self):
+        self.months = {'01': 'Jan', '02': 'Feb', '03': 'Mar', '04': 'Apr', '05': 'May', '06': 'Jun', '07': 'Jul', '08': 'Aug',
+          '09': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dec'}
+        self.full_months = {'Jan': 'January', 'Feb': 'February', 'Mar': 'March', 'Apr': 'April', 'May': 'May', 'Jun': 'Jun',
+               'Jul': 'July', 'Aug': 'August', 'Sep': 'September', 'Oct': 'October', 'Nov': 'November',
+               'Dec': 'December'}
+        self.notion_dir = 'notion-export/'
+        self.DIARIES_DIR = self.notion_dir + 'diaries-export/'
+
 
     def preprocessing(self):
         '''Returns dict {months:
@@ -29,42 +32,42 @@ class NotionBook:
                         }
         '''
 
-        self.entries = {month: {} for month in months.values()}
+        self.entries = {month: {} for month in self.months.values()}
 
         titles = []
 
-        with open(notion_dir + 'contents.csv', 'r', encoding='utf-8') as f:
+        with open(self.notion_dir + 'contents.csv', 'r', encoding='utf-8') as f:
             csv_reader = csv.reader(f, delimiter=',')
             next(csv_reader)
             for row in csv_reader:
                 titles.append(row[0].replace('/', ' ')[0:10])
 
-        for file in os.listdir(DIARIES_DIR):
+        for file in os.listdir(self.DIARIES_DIR):
             if file.endswith(".md") and file[0:10] in titles:
-                TEXT_DIR = DIARIES_DIR + file
-                PICTURE_DIR = DIARIES_DIR + file[:-3] + "/"
+                TEXT_DIR = self.DIARIES_DIR + file
+                PICTURE_DIR = self.DIARIES_DIR + file[:-3] + "/"
                 picture_file = "No Picture"
 
                 if os.path.isdir(PICTURE_DIR) and len(os.listdir(PICTURE_DIR)) != 0:
                     picture_file = PICTURE_DIR + os.listdir(PICTURE_DIR)[0]
 
-                if file[0:2] not in self.entries[months[file[3:5]]]:
-                    self.entries[months[file[3:5]]][file[0:2]] = {}
+                if file[0:2] not in self.entries[self.months[file[3:5]]]:
+                    self.entries[self.months[file[3:5]]][file[0:2]] = {}
 
                 if file[6] == "-":
                     partner = "partner 2"
-                    if partner in self.entries[months[file[3:5]]][file[0:2]]:
+                    if partner in self.entries[self.months[file[3:5]]][file[0:2]]:
                         partner = "partner 1"
                     title = file[8:].rsplit(' ', 1)[0]
                 else:
                     partner = "partner 1"
-                    if partner in self.entries[months[file[3:5]]][file[0:2]]:
+                    if partner in self.entries[self.months[file[3:5]]][file[0:2]]:
                         partner = "partner 2"
                     title = file[6:].rsplit(' ', 1)[0]
 
                 title = self.textitle(title)
 
-                self.entries[months[file[3:5]]][file[0:2]][partner] = {"Title": title, "Text dir": TEXT_DIR,
+                self.entries[self.months[file[3:5]]][file[0:2]][partner] = {"Title": title, "Text dir": TEXT_DIR,
                                                                   "Picture dir": picture_file}
 
                 print(f"Entry {title} collected")
@@ -189,10 +192,10 @@ class NotionBook:
         os.remove(temp_dir)
 
     def write_to_tex(self):
-        for month in months.values():
+        for month in self.months.values():
 
             with open(f'build/entries/{month}/{month}.tex', 'w', encoding='utf-8') as f:
-                f.write('\chapter{' + full_months[month] + '}\n\n')
+                f.write('\chapter{' + self.full_months[month] + '}\n\n')
                 pic_dirs = []
                 for picture in os.listdir('month_photos/'):
                     if picture[0:3].capitalize() == month:
@@ -226,7 +229,7 @@ class NotionBook:
             # f.write(r'\input{dedication.tex}' + '\n\n')
             f.write(r'\tableofcontents*' + '\n\n')
 
-            for month in months.values():
+            for month in self.months.values():
                 f.write('\input{entries/' + month + '/' + month + '.tex' + '}\n')
             f.write(r'\end{document}')
 
@@ -235,11 +238,9 @@ if __name__ == "__main__":
     N = NotionBook()
     N.preprocessing()
 
-    for month in months.values():
+    for month in N.months.values():
         for date in N.entries[month].keys():
             for partner in N.entries[month][date].keys():
                 N.create_latex_diary(date, month, partner)
 
     N.write_to_tex()
-
-# xelatex .\lives_of_chum_x_lil_one.tex
