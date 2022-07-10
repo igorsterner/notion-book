@@ -219,8 +219,7 @@ class NotionBook:
 
             f.write(r'\input{style.tex}' + '\n\n')
             f.write(r'\begin{document}' + '\n \n')
-            # Optional
-            # f.write(r'\input{dedication.tex}' + '\n\n')
+            f.write(r'\input{dedication.tex}' + '\n\n')
             f.write(r'\tableofcontents*' + '\n\n')
 
             for month in self.months.values():
